@@ -2,7 +2,7 @@
 **Precision 100** provides a framework to execute simple acyclic workflow of `instruction`s. An `instruction` can be anything from a `shell` script to a `sql` file and anything in between. The `instruction`s are executed by `operators`. `operators` map the `instruction`s to appropriate utilities which can execute them. e.g. an `sql` `instruction` will be executed by `sqlplus` utility. 
 
 The framework specifies the following,
-1. Project definition
+1. [Project definition](#project-definition)
 2. Repository definition
 3. Operator framework
 
