@@ -1,5 +1,23 @@
 # Precision 100 Migration Framework
-**Precision 100** provides a framework to execute simple acyclic workflow of `instruction`s. An `instruction` can be anything from a `shell` script to a `sql` file and anything in between. The `instruction`s are executed by `operators`. `operators` map the `instruction`s to appropriate utilities which can execute them. e.g. a `sql` `instruction` will be executed by `sqlplus` utility. `instrcution`s are grouped into `containers` and `containers` are grouped into `dataflows`.
+**Precision 100** provides a framework to execute simple acyclic workflow of `instruction`s. An `instruction` can be anything from a `shell` script to a `sql` file and anything in between. 
+
+## Quick Usage
+```
+git clone --recurse-submodules git@github.com:ennovatenow/precision-native.git
+
+cd precision-native
+./configure-project.sh
+./init-exec.sh mock1
+./migrate.sh
+```
+
+This uses the `precision-native` client to execute the simple-demo project.
+
+```
+The --recurse-submodules parameter is required while cloning because we have a dependency with Precision100 framework.
+```
+
+The `instruction`s are executed by `operators`. `operators` map the `instruction`s to appropriate utilities which can execute them. e.g. a `sql` `instruction` will be executed by `sqlplus` utility. `instrcution`s are grouped into `containers` and `containers` are grouped into `dataflows`.
 
 A **Precision 100** `project` is a set `dataflows`. Develepors build the `instructions`, `containers` and `dataflows` and then release it into `repositories`. The framework connects to the `repositories` and executes the `project`
 
@@ -39,16 +57,6 @@ A `repository` is a store of published `projects`. The framework connects to the
 ## Operator framework
 The Precision100 framework follows an inside out architecture, nearly all components of the framework can be enhanced by using `operators`. The framework supports three kinds of `operators`. An `operator` which serves an interface for the work instructions to be executed. e.g. `sql-plus` operator, A `repo-operator` which serves as an interface to the different `repository` types and `connect-operators` which is used to interfac with different data sources and targets.
 
-
-## Quick Usage
-```
-git clone https://github.com/ennovatenow/precision-100-framework.git
-```
-
-or
-```
-unzip precision-100-framework.zip
-```
 
 ### A longer example
 To-do
