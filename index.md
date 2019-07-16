@@ -1,5 +1,7 @@
 # Precision 100 Migration Framework
-Precision 100 provides the core framework to create and execute acyclic workflows to move data between sources and targets. The framework defines the following,
+**Precision 100** provides a framework to execute simple acyclic workflow of `instruction`s. An `instruction` can be anything from a `shell` script to a `sql` file and anything in between. The `instruction`s are executed by `operators`. `operators` map the `instruction`s to appropriate utilities which can execute them. e.g. an `sql` `instruction` will be executed by `sqlplus` utility. 
+
+The framework specifies the following,
 1. Project definition
 2. Repository definition
 3. Operator framework
