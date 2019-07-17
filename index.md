@@ -16,6 +16,11 @@ This uses the `precision-native` client to execute the simple-demo project.
 ```
 The --recurse-submodules parameter is required while cloning because we have a dependency with Precision100 framework.
 ```
+
+## What next?
+The best way forward is to look at the longer example and go through it. Alternatively you can go through the concepts followed by the longer example.
+
+
 ## Operating System Requirements
 Precision 100 Framework uses the `bash` shell for most of its work, more specifically it uses bash 4.2 features like associative arrays. Although all development and tests of the framework is done on `linux`, the framwork should run on any operating system supporting the `bash` shell.
 Make sure you check your `bash` version.
