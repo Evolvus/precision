@@ -3,7 +3,9 @@ In this example we will start by creating a simple project that executes two she
 
 ## Creating the Project.
 Create a new repository with the name "the-longer-example" with the description "A sample project to understand the workings of Precision 100". 
+
 ![Create a new repository](./images/create-repository.png)
+
 Now execute the following commands.
 ```
 git clone https://github.com/ennovatenow/the-longer-example.git the-longer-example
