@@ -3,7 +3,9 @@ In this example we will start by creating a simple project that executes two she
 
 ## Creating the Project.
 Create a new repository with the name "the-longer-example" with the description "A sample project to understand the workings of Precision 100". 
+
 ![Create a new repository](./images/create-repository.png)
+
 Now execute the following commands.
 ```
 git clone https://github.com/ennovatenow/the-longer-example.git the-longer-example
@@ -23,15 +25,20 @@ git push origin master
 And we have perfectly valid and of course a perfectly useless **Precision 100** project. (Change the git url to point to the repository you have created). 
 
 
-The above instructions are straight forward, you create two folders at the root of the project i.e. `dataflows` and `containers`.Inside the `containers` folder we create two containers, in this case we have named them, again very unimaginatively, `container-one` and `container-two`. These names could be anything  and then we put "`reg`" or registry files in them. These are special files and should be named exactly as mentioned. Each `container` should have a `container registry` file i.e `container.reg` and the `dataflows` folder must have a `project registry` file i.e `project.reg`. 
+The above instructions are straight forward, you create two folders at the root of the project i.e. `dataflows` and `containers`.Inside the `containers` folder we create two folders (containers in Precision 100 parlance), in this case we have named them, again very unimaginatively, `container-one` and `container-two`. 
+
+Inside the `dataflows` and `container`s we put "`reg`" or registry files. These are special files and should be named exactly as mentioned. Each `container` should have a `container registry` file i.e `container.reg` and the `dataflows` folder must have a `project registry` file i.e `project.reg`. 
 
 You can learn more about `registry` files and naming conventions in the best practices section of the documentation, but for now lets try to run this empty project.
 
 ## Running the-longer-example
 To run the-longer-example project, execute the following,
 ```
-git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git precision-native
-cd precision-native
-./configure-project.sh
+git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git tle-client
+cd tle-client
+./configure-project.sh "GIT" "https://github.com/ennovatenow/the-longer-example.git" "The Longer Example"
+/init-exec.sh "mock1"
+./migrate.sh
+./close-exec.sh
 ```
 
