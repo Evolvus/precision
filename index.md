@@ -18,7 +18,7 @@ The --recurse-submodules parameter is required while cloning because we have a d
 ```
 
 ## What next?
-The best way forward is to look at [the longer example](./the-longer-example.md) and go through it. Alternatively you can go through the concepts followed by the longer example.
+The best way forward is to look at [the-longer-example](./the-longer-example.md) and other [examples](./examples.md) and go through it. Alternatively you can go through the [concepts](./concepts.md) and then the [examples](./examples.md)
 
 
 ## Operating System Requirements
