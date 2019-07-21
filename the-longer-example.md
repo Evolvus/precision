@@ -45,7 +45,7 @@ If things have gone well you should see a menu and your screen should look like 
 
 ![The longer-example menu](./images/the-longer-example-menu.png)
 
-That was quite a lot of work to get to a menu that just says Quit, it would seem that nothing has been done. Well, Yes and No. The fact that we were able to bring up the menu indicates that this is a valid project even though it is not doing anything, yet. Lets understand the activities performened here and then we will see how to make our project do something, and add those activities to the menu.
+That was quite a lot of work to get to a menu that just says Quit, it would seem that nothing has been done. Well, Yes and No. The fact that we were able to bring up the menu indicates that this is a valid project even though it is not doing anything (yet). Lets understand the activities performed here and then we will see how to make our project do something, and add those activities to the menu.
 
 The first thing we do to run the project is to install one of the **Precision 100** clients. The **Precision 100** framework by itself does not provide any interface to run the project, this is done by **Precision100** clients. `precision-native` gives a menu-driven interface which can be used to run the project. 
 
