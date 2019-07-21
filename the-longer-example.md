@@ -55,5 +55,37 @@ Now that we have the project configured, its time to run the project. We can run
 
 Finally we run `migrate.sh`. This interogates the downloaded project and builds the menu based on the contents of the `project.reg` registry file in the `dataflows` folder. We have not added anything to this file and hence we get nothing in the menu except the default `Quit` option.
 
+Before we do anythng else, we must first close the current `iteration`. This is necessary because we can only execute one `iteration` at a time. The `mock1` `iteration` must be closed. We can do this by invoking the `close-exec.sh` script provided by the client as shown below,
+
+![The longer-example close iteration](./images/the-longer-example-close-iteration.png)
+
+Now lets add menu options and run the project.
+
+## Adding Options to the Menu
+To add options to the `precision-native` menu, we need to go back and make changes to the files in our project and check them in. 
+
+```
+cd the-longer-example
+echo "Execute Container One,exec-container-one" > dataflows/project.reg
+echo "Execute Container Two,exec-container-two" >> dataflows/project.reg
+echo "Execute Both Containers,exec-container-one-two" >> dataflows/project.reg
+
+git add .
+git commit -m "added entries to the project registry file"
+git push origin master
+
+```
 
 
+Now, come back to the `tle-client` folder and lets try to run the project again. This time we dont need to clone or configure the project, we directly start a new iteration.
+
+```
+/init-exec.sh "mock2"
+./migrate.sh
+```
+
+Now you should see the menu as below,
+
+![The longer-example custom menu](./images/the-longer-example-custom-menu.png)
+
+And we have got ourselves a custom menu of our own!!
