@@ -80,6 +80,7 @@ git push origin master
 Now, come back to the `tle-client` folder and lets try to run the project again. This time we dont need to clone or configure the project, we directly start a new iteration.
 
 ```
+cd tle-client
 /init-exec.sh "mock2"
 ./migrate.sh
 ```
@@ -106,3 +107,42 @@ Once a menu option is chosen, two files created every time a menu option is chos
 Now that we have learned about `precision-native` and we know where to go to find the outputs, lets go ahead and create some `instruction`s
 
 ## Adding `instruction`s
+So far we have a valid **Precison 100** project with two empty `container`s, now lets add some `instructions` to the containers and invoke them from the `precision-native` menu.
+
+```
+cd the-longer-example
+echo "echo \"This message is from container-one, script one\""  > containers/container-one/script-one.sh
+echo "echo \"This message is from container-one, script two\""  > containers/container-one/script-two.sh
+echo "echo \"This is an error message is from container-one, script two\" 1>&2"  >> containers/container-one/script-two.sh
+
+echo "echo \"This message is from container-two, script one\""  > containers/container-two/script-one.sh
+
+chmod u+x containers/container-one/script-one.sh
+chmod u+x containers/container-one/script-two.sh
+chmod u+x containers/container-two/script-one.sh
+
+echo "container-one" > dataflows/exec-container-one.reg
+echo "container-two" > dataflows/exec-container-two.reg
+echo "container-one" > dataflows/exec-container-one-two.reg
+echo "container-two" >> dataflows/exec-container-one-two.reg
+
+echo "10,script-one.sh,sh" > containers/container-one/container.reg
+echo "20,script-two.sh,sh" >> containers/container-one/container.reg
+echo "10,script-one.sh,sh" > containers/container-two/container.reg
+
+git add .
+git commit -m "added instructions to the project"
+git push origin master
+```
+
+That is a whole lot of echo's, but what we are doing here is very simple. We created three shell scripts, `script-one.sh`, `script-two.sh` in the `container-one` folder and `script-one.sh` in the `container-two` folder. We then created `exec-container-one` and `exec-container-two` `dataflow` registry files with appropriate entries and finally we then made entries to the `container.reg` registry files in the `container`s.
+
+With this lets run the project again.(remember to close the previous `iteraton` using `close-exec.sh` or you wont be able to start new ones). 
+```
+cd tle-client
+./init-exec.sh "mock4"
+./migrate.sh
+```
+
+
+
