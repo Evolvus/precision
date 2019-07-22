@@ -144,5 +144,11 @@ cd tle-client
 ./migrate.sh
 ```
 
+Lets choose Option 1 and look at the logs you should be able to see the messages coming from the scripts we added to the project.
 
+![The longer-example log file](./images/the-longer-example-log-file.png)
+
+The err file should have the error message we added in `script-two.sh`
+
+![The longer-example err file](./images/the-longer-example-err-file.png)
 
