@@ -89,3 +89,20 @@ Now you should see the menu as below,
 ![The longer-example custom menu](./images/the-longer-example-custom-menu.png)
 
 And we have got ourselves a custom menu of our own!!
+
+## Using `precision-native`
+Before we go further, lets spend some time to examine the `precision-native` client. From the above example we can glean the following,
+1. It allows you to configure the installation to a project.
+2. It allows you to execute named `iteration`s.
+3. For each `iteration` it checks out the latest code from the `repository`
+4. It gives you a menu interface which it dynamically constructs from the project.
+
+Now lets see what happens when you choose a menu option. If the menu is up, choose 1, if you had quit the menu, not problem just run `migrate.sh` again and then choose 1. You should see a screen as follows,
+
+![The longer-example after execution](./images/the-longer-example-after-execution.png)
+
+Once a menu option is chosen, two files created every time a menu option is chosen, a `log` file and an `err` file. These are the files we need to examine to see the output of the `instruction`s in the `container`s. If there are no errors reported during the execution we will have a 0 byte `err` file. The `log` file captures the progress of the execution.(Technically `log` and `err` files represent the `stdout` and `stderr` streams)
+
+Now that we have learned about `precision-native` and we know where to go to find the outputs, lets go ahead and create some `instruction`s
+
+## Adding `instruction`s
