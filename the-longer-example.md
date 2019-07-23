@@ -154,4 +154,4 @@ The err file should have the error message we added in `script-two.sh`
 
 So there we have it. A project that executes `instructions`, in this case the `instructions` are the shell scripts we added in the `containers`. The `instructions` could be sql scripts, loader scripts or any thing else. The order of execution of `container`s in defined in the `dataflow` registry files and the order of execution of `instructions` in a `container` registry file.
 
-With these features we can execute an arbitrary number of commands (`instructions`). These commands can be organized into `dataflows` so that they can be executed all at once. Look at examples for the different kinds of `instructions` we can use and the different use cases where the **Precision 100** framework can be used.
+With these features we can execute an arbitrary number of commands (`instructions`). These commands can be organized into `dataflows` so that they can be executed all at once. Look at [examples](./examples.md) for the different kinds of `instructions` we can use and the different use cases where the **Precision 100** framework can be used.
