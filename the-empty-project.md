@@ -7,6 +7,8 @@ To create and execute the project you need to have the following,
 1. A [Github](https://www.github.com) account
 2. Git client installed on your machine.
 
+You can find many tutorials and videos to install Git on your operating system. e.g. you can look at [this one from Atlassian](https://www.atlassian.com/git/tutorials/install-git) or [this from the Git book](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
 ## Creating the Project
 Create a new repository in Github with the name “*the-empty-project*” with the description “A valid but empty Precision 100  project"
 
