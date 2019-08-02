@@ -25,8 +25,18 @@ A **Precision 100** `dataflow` describes the `dataflow` using registry files and
 A `dataflow` represents a high level task to be achieved by the framework. e.g. In [the-migration-project](./the-migration-project.md), a `dataflow` is 'Load Source Data to Staging'. When executed this should pull all the data from the source system into the staging area. Each module of the source system can be modeled as a `container` with the instructions to load data only for that module in it.
 
 ## Container
-A `container` in the **Precision 100** framework is so named because it *contains* the `instruction`(s) that need to be executed in a flow. A `containier` is defined by a folder inside the `containers` folder of a project. This folder contains one or more files (`instruction`(s)) and a registry file named `container.reg`. This registry file has the order and the `operator`(s) needed to execute the `instruction`(s).
+A `container` in the **Precision 100** framework is so named because it *contains* the `instruction`(s) that need to be executed in a flow. A `container` is defined by a folder inside the `containers` folder of a project. This folder contains one or more files (`instruction`(s)) and a registry file named `container.reg`. This registry file has the order and the `operator`(s) needed to execute the `instruction`(s).
 
 Unlike `dataflow`(s), `container`(s) should be designed for reusability. They represent a logical sharable unit that can be reused across `dataflow`s and even projects. e.g. in [the-migration-project](./the-migration-project.md), we could have a `dataflow` to 'Load Source Data to Staging', which would move all the data from all the modules to the staging or we could have 'Load Static Source Data to Staging' which would just need static data modules to be moved. We should be able to use the same `container`(s) for both the `dataflow`s. We can achieve this by making one `container` per module with the `instruction`(s) to load only data for that one module.
 
+## Instruction
+An `instruction` is the leaf node of the workflow. They are declarative statements defined in the container registry file `container.reg`. An `instruction` consists of an `operator` and the parameters it requires to execute. Typically one of the parameters for the `operator` is a file contained in the `container`. e.g. the `container` can have a sql file which will be executed by the 'sql' operator or a data file that can be loaded using the 'loader' operator.
 
+A few of the `operator`s available are listed here,
+1. sql-plus - will execute a sql file located in the container using *sqlplus*
+2. loader - will load a file located in the *PRECISION100_OPERATOR_LOADER_INPUT* folder using control file located in the container using *sql loader*
+3. smart-loader - will load a file located in the *PRECISION100_OPERATOR_SMART_LOADER_INPUT* folder using a control file that is dyanmically constructed.
+4. spool - will generate a spool file in the *PRECISION100_OPERATOR_SPOOL_FOLDER* folder for a table.
+5. sh - will execute a shell script located in the container.
+
+For a comprehensive list of `operator`s and their description can be found [here.](./operators.md)
