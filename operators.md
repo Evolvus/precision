@@ -23,15 +23,18 @@ An `instruction` can be described as an `operator` along with its parameters. Th
 
 ### Shell
 The *shell* `operator` executes a shell script that is located in the `container`. The name of the shell script is passed as a parameter in the `instruction`. It throws an error if the script cannot be found in the `container`.
-###
+
+### Installation
 The *shell* `operator` comes installed with the framework. To install a newer version execute the following
 ```
 ./bin/install-operator.sh <path to operator bundle> shell
 ```
 #### Parameters
 Name of the script file
+
 #### Dependency
 None.
+
 #### Instruction Example
 ```
 10,abc.sh,sh
@@ -40,6 +43,26 @@ or
 ```
 10,abc.sh,shell
 ```
+---
+
+### unknown-file-type
+This `operator` is installed as a part of the framework, it is invoked when the framework is unable to identify the `operator` needed to execute the instruction. This `operator` merely echos the warning to standred output.
+
+### Installation
+The *unknown-file-type* `operator` comes installed with the framework. To install a newer version execute the following
+```
+./bin/install-operator.sh <path to operator bundle> unknown-file-type
+```
+#### Parameters
+None.
+
+#### Dependency
+None.
+
+#### Instruction Example
+This `operator` is never used directly. This is internally used by the framework as a fallback for conditions where it is not able to identify which operator to use.
+---
+
 ## Repo Operator
 
 
