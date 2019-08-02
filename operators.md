@@ -29,16 +29,16 @@ As with **Precision 100** projects, an `operator` is also a file system folder t
 ## Operator
 An `instruction` can be described as an `operator` along with its parameters. The following list gives the `operators` and the parameters it can take.
 
-| Operator | Instruction Example |
-|----------|---------------------|
-| [shell](#shell) | *10,abc.sh,sh* |
-| [unknown-file-type](#unknown-file-type) | Not invoked directly |
-| [sql-plus](#sql-plus) | *10,abc.sql,sql* |
-| [loader](#loader) | *10,abc.ctl,loader* |
-| [smart-loader](#smart-loader) | *10,table_abc,smart-loader* |
-| [spool](#spool) | *10,table_abc,spool* |
-| [map-file](#map-file) | *10,casa.tsv,map-file* |
-| [smart-map-file](#smart-map-file) | *10,casa.tsv,smart-map-file* |
+| Operator | Instruction Example | Description |
+|----------|---------------------|-------------|
+| [shell](#shell) | *10,abc.sh,sh* | Executes *abc.sh* |
+| [unknown-file-type](#unknown-file-type) | Not invoked directly |  |
+| [sql-plus](#sql-plus) | *10,abc.sql,sql* | Executes *sqlplus @abc.sql...* |
+| [loader](#loader) | *10,abc.ctl,loader* | Executes *sqlldr control=abc.ctl...* |
+| [smart-loader](#smart-loader) | *10,table_abc,smart-loader* | Creates *table_abc.ctl* and executes *sqlldr control=table_abc.ctl..* |
+| [spool](#spool) | *10,table_abc,spool* | Uses *sqlplus* to spool *select * from table_abc* |
+| [map-file](#map-file) | *10,casa.tsv,map-file* | Creates table *O_CASA*, transformation script *O-CASA-TRANSFORM.sql* and executes it using *sqlplus* |
+| [smart-map-file](#smart-map-file) | *10,casa.tsv,smart-map-file* | Similar to *map-file*, except that this operator using a dictionary to map functional names into column names for the table |
 
 
 ### Shell
