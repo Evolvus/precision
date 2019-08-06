@@ -8,7 +8,7 @@ To create and execute the project you need to have the following,
 
 1. A [Github](https://www.github.com) account
 2. Git client installed on your machine.
-3. A running *Oracle* database with a schema named *Precision*
+3. A running *Oracle* database with a schema named *Precision100*
 4. A working *sql plus* client
 5. A working *sql loader* client
 
@@ -17,5 +17,18 @@ You can find many tutorials and videos to install Git on your operating system. 
 Installing and confguring a Oracle database is beyond the scope of this tutorial. If you already have one, we can use it else the recommended way is to install [docker](https://docs.docker.com) for your operating system (You can find several tutorials to assist you with it. e.g. [here](https://docs.docker.com/)) and run a Oracle docker image.
 
 Next, you need to install *sql plus* and *sql loader*. These are Oracle client tools. You can learn more about them [here](https://www.oracle.com/technetwork/database/database-technologies/instant-client/overview/index.html). Specifically you need to install the the *base*, *sqlplus* and *tools* packages for your operating system.
+
+## Installation on Ubuntu
+Lets install and configure all the prerequisites on Ubuntu 18.4. The steps should mostly be the same in any Operating system ofcourse with the appropriate artifacts and links.
+
+### Install docker
+Follow the directions give [here](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04) to install *docker*. Follow step 2 in the article also to ensure you dont have to use `sudo` for everything. To verify that *docker* has been installed successfully run the following,
+
+```
+docker --version
+```
+It should output something similar `Docker version 18.06.0-ce, build 0ffa825` as the output
+
+
 
 
