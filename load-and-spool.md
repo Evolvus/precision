@@ -68,10 +68,23 @@ git commit -m "created the template"
 git push origin master
 ```
 
-### Adding `dataflow`s
-The part upto this should be familiar, we have created an empty project with the appropriate `container`s. If we run this project using the `precision-native` client we will see a menu with just *Quit* as the option. Now lets update the project to expose the menu options we want. Execute the following,
+### Installing and Configuring the `precision-native` client
+The part upto this should be familiar, we have created an empty project with the appropriate `container`s. Lets configure the project in preparation of the the first iteration the project using the `precision-native` client. 
 
 ```
+git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git lase-client
+cd lase-client
+./configure-project.sh "GIT" "https://github.com/ennovatenow/load-and-spool-example.git" "Load and Spool Example"
+```
+
+With this we have installed the `precision-native` client and configured it to execute the "Load and Spool Example".
+
+
+### Adding `dataflow`s
+Now that we have the `precision-native` client installed and configured, lets add `dataflows`s and get a functional menu. Execute the following in the *load-and-spool-example* folder,
+
+```
+cd load-and-spool-example
 echo "Setup the staging area,setup" > dataflows/project.reg
 echo "Load data into staging,load" >> dataflows/project.reg
 echo "Spool the file,spool" >> dataflows/project.reg
@@ -85,15 +98,18 @@ git commit -m "Added dataflow registry files to the project"
 git push origin master
 ```
 
-Lets run the project again this time the menu should be as seen in the image below.
+### Running the project
+Lets run the project, we should see the menu as follows,
+
 ```
+cd lase-client
 git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git tle-client
 cd tle-client
-./configure-project.sh "GIT" "https://github.com/ennovatenow/the-longer-example.git" "The Longer Example"
 /init-exec.sh "mock1"
 ./migrate.sh
 ```
-![The longer-example menu](./images/the-longer-example-menu.png)
+
+![The load and spool example menu](./images/load-and-spool-example-menu.png)
 
 
 ## Adding `instruction`s
