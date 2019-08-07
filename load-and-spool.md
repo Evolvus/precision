@@ -68,6 +68,7 @@ git commit -m "created the template"
 git push origin master
 ```
 
+### Adding `dataflow`s
 The part upto this should be familiar, we have created an empty project with the appropriate `container`s. If we run this project using the `precision-native` client we will see a menu with just *Quit* as the option. Now lets update the project to expose the menu options we want. Execute the following,
 
 ```
@@ -95,7 +96,8 @@ cd tle-client
 ![The longer-example menu](./images/the-longer-example-menu.png)
 
 
-Even though we have a menu now, It still does not do anything. Chooing any of the options just produces logs but there is nothing happening. It is time we added some `instruction`s to achieve what we want.
+## Adding `instruction`s
+Even though we have a menu now, It still does not do anything. Choosing any of the options just produces logs but there is nothing happening. It is time we added some `instruction`s to achieve what we want.
 
 The first thing we want is to create a table in the staging area i.e in the *precision100* Oracle schema. To execute a *sql* in a Oracle database we need to use the *sql* opreator. Let us add an `instruction` to run a file named *setup.sql*. Execute the following,
 
@@ -108,4 +110,8 @@ git commit -m "Added instruction to execute a SQL file"
 git push origin master
 ```
 
+The `instruction` we are giving here is use the *sql* operator to run the *setup.sql* file which is located in the `container`. The number *10* is an index that decides the order of the `instruction`s. Since there is only one `instruction` the sequence attribute does not matter in this case. 
+
+### Installing the *sql-plus* `operator`
+Before we proceed any further we need to install the *sql-plus* `operator`. By default the **Precision 100** framework comes only with the *shell* operator, other `operator`s need to be installed. To install the `operator` execute the following,
 
