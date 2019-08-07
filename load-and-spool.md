@@ -115,3 +115,25 @@ The `instruction` we are giving here is use the *sql* operator to run the *setup
 ### Installing the *sql-plus* `operator`
 Before we proceed any further we need to install the *sql-plus* `operator`. By default the **Precision 100** framework comes only with the *shell* operator, other `operator`s need to be installed. To install the `operator` execute the following,
 
+```
+git clone https://github.com/ennovatenow/precision-100-operators.git OPERATORS
+
+./bin/install-operators.sh ./OPERATORS/operators sql-plus
+```
+
+### Installing the *oracle* `connect-operator` 
+The *sql-plus* `operator` can be used to execute *sql* files, however it still needs credentials to connect to the Oracle database. `connect-operator`s extract the credentials from the credential store i.e *.connections.env.sh*. To install the *oracle* *connect-operator* execute the following,
+
+```
+./bin/install-connect-operators.sh ./OPERATORS/connect-operators/ oracle
+```
+
+### Configuring the connection
+To connect to the database the credentials must be stored to the credential store. Execute the following,
+
+```
+echo "PRECISION100_CONNECTION,ORACLE,precision100,Welcome123,mig" > ./conf/.connections.env.sh
+```
+
+The credentials take the form "Connection Name,Operator Name, Schema Name, Password, Sid"
+
