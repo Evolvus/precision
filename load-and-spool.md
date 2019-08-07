@@ -197,3 +197,8 @@ Connect to the databse using sql plus and the table "NAME_LIST" should have been
 
 ![The load and spool example sqlplus](./images/load-and-spool-example-sql-plus.png)
 
+And there we have it, the first `instruction` executed by the framework. Lets close *mock2* iteration and move ahead to complete the rest of the `instruction`s we need to complete the example.
+
+```
+./close-exec.sh "mock2"
+```
