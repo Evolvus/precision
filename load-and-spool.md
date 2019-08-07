@@ -103,8 +103,8 @@ Lets run the project, we should see the menu as follows,
 
 ```
 cd lase-client
-git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git tle-client
-cd tle-client
+git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git lase-client
+cd lase-client
 /init-exec.sh "mock1"
 ./migrate.sh
 ```
