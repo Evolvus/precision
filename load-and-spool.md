@@ -105,12 +105,16 @@ Lets run the project, we should see the menu as follows,
 cd lase-client
 git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git lase-client
 cd lase-client
-/init-exec.sh "mock1"
+./init-exec.sh "mock1"
 ./migrate.sh
 ```
 
 ![The load and spool example menu](./images/load-and-spool-example-menu.png)
 
+With this we have a working project with a functional menu. We will close the iteration and proceed to the next step
+```
+./close-exec.sh "mock1"
+```
 
 ## Adding `instruction`s
 Even though we have a menu now, It still does not do anything. Choosing any of the options just produces logs but there is nothing happening. It is time we added some `instruction`s to achieve what we want.
@@ -118,6 +122,7 @@ Even though we have a menu now, It still does not do anything. Choosing any of t
 The first thing we want is to create a table in the staging area i.e in the *precision100* Oracle schema. To execute a *sql* in a Oracle database we need to use the *sql* opreator. Let us add an `instruction` to run a file named *setup.sql*. Execute the following,
 
 ```
+cd load-and-spool-example
 touch containers/setup/setup.sql
 echo "10,setup.sql,sql" > containers/setup/container.reg
 
@@ -132,8 +137,8 @@ The `instruction` we are giving here is use the *sql* operator to run the *setup
 Before we proceed any further we need to install the *sql-plus* `operator`. By default the **Precision 100** framework comes only with the *shell* operator, other `operator`s need to be installed. To install the `operator` execute the following,
 
 ```
+cd lase-client
 git clone https://github.com/ennovatenow/precision-100-operators.git OPERATORS
-
 ./bin/install-operators.sh ./OPERATORS/operators sql-plus
 ```
 
@@ -141,6 +146,7 @@ git clone https://github.com/ennovatenow/precision-100-operators.git OPERATORS
 The *sql-plus* `operator` can be used to execute *sql* files, however it still needs credentials to connect to the Oracle database. `connect-operator`s extract the credentials from the credential store i.e *.connections.env.sh*. To install the *oracle* *connect-operator* execute the following,
 
 ```
+cd lase-client
 ./bin/install-connect-operators.sh ./OPERATORS/connect-operators/ oracle
 ```
 
@@ -148,14 +154,46 @@ The *sql-plus* `operator` can be used to execute *sql* files, however it still n
 To connect to the database the credentials must be stored to the credential store. Execute the following,
 
 ```
+cd lase-client
 echo "PRECISION100_CONNECTION,ORACLE,precision100,Welcome123,mig" > ./conf/.connections.env.sh
 ```
 
 The credentials take the form "Connection Name,Operator Name, Schema Name, Password, Sid". Change the values accordingly.
 
 ### Running the `dataflow`
-With the connection configured we have everything we need to execute the *setup* `dataflow`. So lets go ahead and do it,
+With the connection configured we have everything we need to execute the *setup* `dataflow`. So lets update *setup.sql* with the sql to create the table, run the *setup* menu option and check the database for the created table.
 
 ```
+cd load-and-spool-example
+echo "DROP TABLE NAME_LIST;" > containers/setup/setup.sql
+echo "CREATE TABLE NAME_LIST ( id number, state nvarchar2(2), gender nvarchar2(1), year nvarchar2(4), name nvarchar2(255), usage number); " >> containers/setup/setup.sql
+
+git add .
+git commit -m "Added proper create table sql to setup.sql"
+git push origin master
 ```
+
+Now we have a proper sql ready to be executed.
+
+```
+cd lase-client
+./init-exec.sh "mock2"
+./migrate.sh 
+```
+
+Now we should have menu options as shown below,
+
+![The load and spool example menu mock2](./images/load-and-spool-example-menu-mock2.png)
+
+Choose menu option 1, it should execute the `dataflow` and we should have a log as below,
+
+
+![The load and spool example log menu](./images/load-and-spool-example-log-menu.png)
+
+![The load and spool example log](./images/load-and-spool-example-log.png)
+
+
+Connect to the databse using sql plus and the table "NAME_LIST" should have been created in the database.
+
+![The load and spool example sqlplus](./images/load-and-spool-example-sql-plus.png)
 
