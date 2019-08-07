@@ -42,3 +42,70 @@ For our example, we will design the project as follows,
 | Setup | setup | Drop and Create the table |
 | Load | load | Truncate the table and load data into it |
 | Spool | spool | Generate the CSV file |
+
+
+## Creating the project
+Create a new repository with the name "load-and-spool-example" with the description "A project to load data into a table and spool it into a file".
+
+![Create a new repository](./images/create-repository.png)
+
+Now execute the following commands.
+```
+git clone https://github.com/ennovatenow/load-and-spool-example.git load-and-spool-example
+
+cd load-and-spool-example
+mkdir dataflows
+touch dataflows/project.reg
+mkdir -p containers/setup
+touch containers/setup/container.reg
+mkdir -p containers/load
+touch containers/load/container.reg
+mkdir -p containers/spool
+touch containers/spool/container.reg
+
+git add .
+git commit -m "created the template"
+git push origin master
+```
+
+The part upto this should be familiar, we have created an empty project with the appropriate `container`s. If we run this project using the `precision-native` client we will see a menu with just *Quit* as the option. Now lets update the project to expose the menu options we want. Execute the following,
+
+```
+echo "Setup the staging area,setup" > dataflows/project.reg
+echo "Load data into staging,load" >> dataflows/project.reg
+echo "Spool the file,spool" >> dataflows/project.reg
+
+echo "setup" > dataflows/setup.reg
+echo "load" > dataflows/load.reg
+echo "spool" > dataflows/spool.reg
+
+git add .
+git commit -m "Added dataflow registry files to the project"
+git push origin master
+```
+
+Lets run the project again this time the menu should be as seen in the image below.
+```
+git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git tle-client
+cd tle-client
+./configure-project.sh "GIT" "https://github.com/ennovatenow/the-longer-example.git" "The Longer Example"
+/init-exec.sh "mock1"
+./migrate.sh
+```
+![The longer-example menu](./images/the-longer-example-menu.png)
+
+
+Even though we have a menu now, It still does not do anything. Chooing any of the options just produces logs but there is nothing happening. It is time we added some `instruction`s to achieve what we want.
+
+The first thing we want is to create a table in the staging area i.e in the *precision100* Oracle schema. To execute a *sql* in a Oracle database we need to use the *sql* opreator. Let us add an `instruction` to run a file named *setup.sql*. Execute the following,
+
+```
+touch containers/setup/setup.sql
+echo "10,setup.sql,sql" > containers/setup/container.reg
+
+git add .
+git commit -m "Added instruction to execute a SQL file"
+git push origin master
+```
+
+
