@@ -47,7 +47,7 @@ For our example, we will design the project as follows,
 ## Creating the project
 Create a new repository with the name "load-and-spool-example" with the description "A project to load data into a table and spool it into a file".
 
-![Create a new repository](./images/create-repository.png)
+![Create the load-and-spool-example repository](./images/load-and-spool-example-repository.png)
 
 Now execute the following commands.
 ```
@@ -135,5 +135,11 @@ To connect to the database the credentials must be stored to the credential stor
 echo "PRECISION100_CONNECTION,ORACLE,precision100,Welcome123,mig" > ./conf/.connections.env.sh
 ```
 
-The credentials take the form "Connection Name,Operator Name, Schema Name, Password, Sid"
+The credentials take the form "Connection Name,Operator Name, Schema Name, Password, Sid". Change the values accordingly.
+
+### Running the `dataflow`
+With the connection configured we have everything we need to execute the *setup* `dataflow`. So lets go ahead and do it,
+
+```
+```
 
