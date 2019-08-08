@@ -338,3 +338,8 @@ wc -l mock4/spool/NAME_LIST.csv
 ```
 
 The number of records should match the number of records in the table. And there we have it a project that does all the things we started out to do. Create a table, load it with data and generate a CSV file from the contents of the table.
+
+## Summary
+**Precision 100** allows you to execute acyclic workflows.
+
+

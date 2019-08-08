@@ -5,3 +5,4 @@ The best way to learn the **Precision 100** framework is to go through the examp
 1. [The Empty Project](./the-empty-project.md)
 2. [The Longer Example](./the-longer-example.md)
 3. [Load and Spool Example](./load-and-spool.md)
+4. [**Precision 100** without *git* Example](./without-git-example.md)
