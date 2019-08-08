@@ -18,6 +18,16 @@ cd tle-client
 ./configure-project.sh "FILE" "../the-longer-example" "The longer example"
 ```
 
-And we are done. We need to pass the first parameter as *FILE* instead of *GIT* which we have been using most of the time. The second parameter is the path to the folder containing the project instead of a git url. When we start an `iteration` the *file-repo-operator* copies the contents of the folder whose path is mentioned as the second parameter to the *local-repo* folder. Any change made in *the-longer-example* folder will not reflect here till the next `iteration` - just as it happens with the *git* client.
+And we are done. We need to pass the first parameter as *FILE* instead of *GIT* which we have been using most of the time. The second parameter is the path to the folder containing the project instead of a git url. When we start an `iteration` the *file-repo-operator* copies the contents of the folder whose path is mentioned as the second parameter to the *local-repo* folder. Any change made in *the-longer-example* folder will not reflect here till the next `iteration` - just as it happens with the *git*.
+
+To run the project, execute the normal commands, there are no changes there.
+
+```
+cd tle-client
+./init-exec.sh "mock1"
+./migrate.sh
+
+./close-exec.sh "mock1"
+```
 
 And there you have it, Using the **Precision 100** framework without *git*.
