@@ -236,12 +236,12 @@ cd load-and-spool-example
 cp name_list.ctl containers/load/name_list.ctl
 cp name_list.dat containers/load/name_list.dat
 
-echo "CONTAINER=$1" > containers/load/copy_file.sh
-echo "cp $PRECISION100_EXECUTION_CONTAINER_FOLDER/$CONTAINER/name_list.dat $PRECISION100_OPERATOR_LOADER_INPUT_FOLDER/name_list.dat" >> containers/load/copy_file.sh
+echo "CONTAINER=\$1" > containers/load/copy_file.sh
+echo "cp \$PRECISION100_EXECUTION_CONTAINER_FOLDER/\$CONTAINER/name_list.dat \$PRECISION100_OPERATOR_LOADER_INPUT_FOLDER/name_list.dat" >> containers/load/copy_file.sh
 chmod u+x containers/load/copy_file.sh
 
 echo "10,copy_file.sh,sh" > containers/load/container.reg
-echo "20,name_list.ctl,loader" > containers/load/container.reg
+echo "20,name_list.ctl,loader" >> containers/load/container.reg
 
 git add .
 git commit -m "Added instructions and files to load data"
@@ -276,4 +276,12 @@ Choose options *1* and *2*, we should see a log as below for option *2*.
 
 Connect to the database using *sql plus* and "NAME_LIST" table should have been created in the database and have records in them.
 
-![The load and spool example loader](./images/load-and-spool-example-loader.png)
+![The load and spool example loader sqlplus](./images/load-and-spool-example-loader-sqlplus.png)
+
+And we have loaded data into a database table successfully. In a production scenario we will never checkin the data file into the repository. In all probability we will extract the data file from source system or we will be provided the same - in either case we need to make sure that the file follows proper naming convention and is moved to the correct folder for the *loader* operator to pick it up. We can use the *shell* operator to do both these activities.
+
+The *loader* is not the only way to load data into the database. If the data were static we could have created *sql* statements in a file and used the *sql* operator to execute the file and load the data into the table. We can also use the *smart-loader* `operator` which just needs the table name as a parameter and it generates the *ctl* file dynamically!
+
+Lets go ahead and complete the last step of our example, generating the CSV file output of the contents of our table.
+
+### Spooling the data
