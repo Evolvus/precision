@@ -329,3 +329,12 @@ cd lase-client
 Choose options *1*, *2* and *3*. you should get a log as below for option *3*
 
 ![The load and spool example spool log](./images/load-and-spool-example-spool-log.png)
+
+Lets check the generated file and the number of records in it,
+
+```
+cd lase-client
+wc -l mock4/spool/NAME_LIST.csv
+```
+
+The number of records should match the number of records in the table. And there we have it a project that does all the things we started out to do. Create a table, load it with data and generate a CSV file from the contents of the table.
