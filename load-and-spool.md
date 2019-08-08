@@ -205,10 +205,10 @@ And there we have it, the first `instruction` executed by the framework. Lets cl
 
 ### Summary
 Before we go ahead, lets summarize what we have seen so far.
-1. Specific `instruction`s require `operator`s. e.g Executing sql statements require a *sql* `operator`.
+1. Specific `instruction`s require `operator`s. e.g Executing sql statements require a *sql* `operator`, executing shell scripts require the *shell* `operator` etc.
 2. `operator`s other than the *shell* `operator` need to be installed.
-3. Each operator expects parameters like files in specific locations. e.g. *sql* operator expects the *sql* file in the container.
-4. Some `operator`s need connections, these are enabled by using `connect-operators`. e.g. *Oracle* connect-operator to connect to the Oracle Database
+3. Each `operator` expects parameters like files in specific locations. e.g. *sql* `operator` expects the *sql* file in the `container`.
+4. Some `operator`s need connections, these are enabled by using `connect-operators`. e.g. *Oracle* `connect-operator` to connect to the Oracle Database
 5. Credentials for connections are stored in *conf/.connections.env.sh* - the connection entry in this file depends on the `connect-operator`.
 
 ### Loading the data
@@ -225,7 +225,7 @@ Of the above, *4* and *5* are in place. Lets install the *loader* `operator`.
 
 ```
 cd lase-client
-./bin/install-operators.sh ~/work/DIP/OPERATORS/operators loader;
+./bin/install-operators.sh ./OPERATORS/operators loader;
 ```
 
 Now lets add the *ctl* and *dat* files to the project. You can find the *ctl* file [here](https://github.com/ennovatenow/load-and-spool-example/blob/master/name_list.ctl) and the *dat* file [here](https://github.com/ennovatenow/load-and-spool-example/blob/master/name_list.dat). Copy the files to the *containers/load* folder. As mentioned above, for the *loader* `operator` to work, the *ctl* file needs to be in the `container` and the *dat* file must be present in the *PRECISION100_OPERATOR_LOADER_INPUT_FOLDER* folder. We have put both the files in the `container` and we need to move the *dat* file to the *PRECISION100_OPERATOR_LOADER_INPUT_FOLDER* folder. This file move can be achieved by a *shell* `instruction`. 
@@ -248,5 +248,9 @@ git commit -m "Added instructions and files to load data"
 git push origin master
 ```
 
-The first two command are self explanatory. Copy the *ctl* and *dat* files to the *load* `container`. (remember to change to copy the files from where ever you have downloaded them). Next we create a *shell* script. This is a simple script, it merely copies the *dat* file to the appropriate folder so that the next `instruction` i.e. *loader* can load the data
+The first two command are self explanatory. Copy the *ctl* and *dat* files to the *load* `container`. (remember to change to copy the files from where ever you have downloaded them). Next we create a *shell* script. This is a simple script, it merely copies the *dat* file to the appropriate folder so that the next `instruction` i.e. *loader* can load the data. Finally we add the `instruction`s to the registry file.
+
+The interesting part of the shell script is how it finds the location where the *dat* file needs to be copied to. What are *PRECISION100_EXECUTION_CONTAINER_FOLDER* and *PRECISION100_OPERATOR_LOADER_INPUT_FOLDER* ? For that we need to goto the next section.
+
+### **Precision 100** Environment variables
 
