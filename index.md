@@ -6,7 +6,7 @@
 git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git precision-native
 
 cd precision-native
-./configure-project.sh
+./configure-project.sh "GIT" "https://github.com/ennovatenow/the-empty-project.git" "The Empty Project"
 ./init-exec.sh mock1
 ./migrate.sh
 
