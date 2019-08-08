@@ -116,7 +116,7 @@ With this we have a working project with a functional menu. We will close the it
 ./close-exec.sh "mock1"
 ```
 
-## Adding `instruction`s
+## Adding the *sql* `instruction`
 Even though we have a menu now, It still does not do anything. Choosing any of the options just produces logs but there is nothing happening. It is time we added some `instruction`s to achieve what we want.
 
 The first thing we want is to create a table in the staging area i.e in the *precision100* Oracle schema. To execute a *sql* in a Oracle database we need to use the *sql* opreator. Let us add an `instruction` to run a file named *setup.sql*. Execute the following,
@@ -193,7 +193,7 @@ Choose menu option 1, it should execute the `dataflow` and we should have a log 
 ![The load and spool example log](./images/load-and-spool-example-log.png)
 
 
-Connect to the databse using sql plus and the table "NAME_LIST" should have been created in the database.
+Connect to the database using *sql plus* and the table "NAME_LIST" should have been created in the database.
 
 ![The load and spool example sqlplus](./images/load-and-spool-example-sql-plus.png)
 
@@ -202,3 +202,51 @@ And there we have it, the first `instruction` executed by the framework. Lets cl
 ```
 ./close-exec.sh "mock2"
 ```
+
+### Summary
+Before we go ahead, lets summarize what we have seen so far.
+1. Specific `instruction`s require `operator`s. e.g Executing sql statements require a *sql* `operator`.
+2. `operator`s other than the *shell* `operator` need to be installed.
+3. Each operator expects parameters like files in specific locations. e.g. *sql* operator expects the *sql* file in the container.
+4. Some `operator`s need connections, these are enabled by using `connect-operators`. e.g. *Oracle* connect-operator to connect to the Oracle Database
+5. Credentials for connections are stored in *conf/.connections.env.sh* - the connection entry in this file depends on the `connect-operator`.
+
+### Loading the data
+To load the data into the table we need to use the *loader* `operator`. 
+
+The *loader* operator requires the following,
+1. A *ctl* file should be present in the same `container` as the `instruction` and 
+2. The data file to be loaded should be present in the *PRECISION100_OPERATOR_LOADER_INPUT_FOLDER* folder 
+3. The name of the data file should match the *ctl* file. e.g *name_list.ctl* file will load *name_list.dat*
+4. Oracle `connect-operator` is required
+5. Oracle connection credentials are required
+
+Of the above, *4* and *5* are in place. Lets install the *loader* `operator`.
+
+```
+cd lase-client
+./bin/install-operators.sh ~/work/DIP/OPERATORS/operators loader;
+```
+
+Now lets add the *ctl* and *dat* files to the project. You can find the *ctl* file [here](https://github.com/ennovatenow/load-and-spool-example/blob/master/name_list.ctl) and the *dat* file [here](https://github.com/ennovatenow/load-and-spool-example/blob/master/name_list.dat). Copy the files to the *containers/load* folder. As mentioned above, for the *loader* `operator` to work, the *ctl* file needs to be in the `container` and the *dat* file must be present in the *PRECISION100_OPERATOR_LOADER_INPUT_FOLDER* folder. We have put both the files in the `container` and we need to move the *dat* file to the *PRECISION100_OPERATOR_LOADER_INPUT_FOLDER* folder. This file move can be achieved by a *shell* `instruction`. 
+
+Execute the following,
+```
+cd load-and-spool-example
+cp name_list.ctl containers/load/name_list.ctl
+cp name_list.dat containers/load/name_list.dat
+
+echo "CONTAINER=$1" > containers/load/copy_file.sh
+echo "cp $PRECISION100_EXECUTION_CONTAINER_FOLDER/$CONTAINER/name_list.dat $PRECISION100_OPERATOR_LOADER_INPUT_FOLDER/name_list.dat" >> containers/load/copy_file.sh
+chmod u+x containers/load/copy_file.sh
+
+echo "10,copy_file.sh,sh" > containers/load/container.reg
+echo "20,name_list.ctl,loader" > containers/load/container.reg
+
+git add .
+git commit -m "Added instructions and files to load data"
+git push origin master
+```
+
+The first two command are self explanatory. Copy the *ctl* and *dat* files to the *load* `container`. (remember to change to copy the files from where ever you have downloaded them). Next we create a *shell* script. This is a simple script, it merely copies the *dat* file to the appropriate folder so that the next `instruction` i.e. *loader* can load the data
+
