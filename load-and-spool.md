@@ -282,6 +282,50 @@ And we have loaded data into a database table successfully. In a production scen
 
 The *loader* is not the only way to load data into the database. If the data were static we could have created *sql* statements in a file and used the *sql* operator to execute the file and load the data into the table. We can also use the *smart-loader* `operator` which just needs the table name as a parameter and it generates the *ctl* file dynamically!
 
-Lets go ahead and complete the last step of our example, generating the CSV file output of the contents of our table.
+Lets close this `iteration` and go ahead and complete the last step of our example, generating the CSV file output of the contents of our table.
+
+```
+./close-exec.sh "mock3"
+```
 
 ### Spooling the data
+To generate the CSV file output (spooling in Oracle parlance) we need to use the *spool* `operator`.
+
+The *spool* `operator` requires the following,
+
+1. The name of the table whose contents we need to export to a file.
+2. The name of the file generated will be *table name*.csv and will be located in the *PRECISION100_OPERATOR_SPOOL_FOLDER*
+3. Oracle connect-operator is required
+4. Oracle connection credentials are required
+
+Lets install the *spool* `operator`.
+
+```
+cd lase-client
+./bin/install-operators.sh ./OPERATORS/operators spool;
+```
+Now lets go ahead and add the `instruction` to generate the CSV output
+
+```
+cd load-and-spool-example
+echo "10,NAME_LIST,spool" > containers/spool/container.reg
+
+git add .
+git commit -m "Added instruction to generate the CSV file"
+git push origin master
+```
+
+That is it, lets now run the project.
+
+### Running the project
+Execute the following to run the project,
+
+```
+cd lase-client
+./init-exec.sh "mock4"
+./migrate.sh 
+```
+
+Choose options *1*, *2* and *3*. you should get a log as below for option *3*
+
+![The load and spool example spool log](./images/load-and-spool-example-spool-log.png)
