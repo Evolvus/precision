@@ -253,4 +253,27 @@ The first two command are self explanatory. Copy the *ctl* and *dat* files to th
 The interesting part of the shell script is how it finds the location where the *dat* file needs to be copied to. What are *PRECISION100_EXECUTION_CONTAINER_FOLDER* and *PRECISION100_OPERATOR_LOADER_INPUT_FOLDER* ? For that we need to goto the next section.
 
 ### **Precision 100** Environment variables
+**Precision 100** framework defines a lot of environment variables, these variables drive the execution of the framework. All variables defined by **Precision 100** or by its `clients` take the format *PRECISION100_<CONTEXT>_<VARIABLE>*.  The *CONTEXT* defines the life time of the variables e.g. if the context is *EXECUTION*, then these variables are set when you run *init-exec.sh* for the *iteration*
 
+PRECISION100_EXECUTION_CONTAINER_FOLDER - points to the *containers* folder in the project for the current `iteration`.
+PRECISION100_OPERATOR_LOADER_INPUT_FOLDER - points to the *loader* input folder in the project for the current `iteration`.
+
+These values are all set before the `instrution`s are executed and hence are available to them always. To get a complete list of environment variables look [here](./environment-variable-list.md) and [here](./operators.md)
+
+
+### Running the project
+With the *load* `instruction`s all completed lets run the project. Execute the following,
+
+```
+cd lase-client
+./init-exec.sh "mock3"
+./migrate.sh 
+```
+Choose options *1* and *2*, we should see a log as below for option *2*.
+
+
+![The load and spool example load log](./images/load-and-spool-example-load-log.png)
+
+Connect to the database using *sql plus* and "NAME_LIST" table should have been created in the database and have records in them.
+
+![The load and spool example loader](./images/load-and-spool-example-loader.png)
