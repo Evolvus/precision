@@ -1,4 +1,4 @@
-# Precision 100 Migration Framework
+# Precision 100 Framework
 **Precision 100** provides a framework to execute simple acyclic workflow of `instruction`s. An `instruction` can be anything from a `shell` script to a `sql` file and anything in between. 
 
 ## Quick Usage
