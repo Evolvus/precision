@@ -132,12 +132,12 @@ Lets create the mapping sheet for our problem,
 |-------------|-----------|----------------|--------------|---------------|
 | name | VARCHAR | 50 | PASSTHRU | upper() |
 | gender | CHAR | 1 | PASSTHRU | decode() |
-| dob | DATE | 10 | PASSTHRU | "YEAR||'-01-01'" |
+| dob | DATE | 10 | PASSTHRU | YEAR\|\|'-01-01' |
 | state | VARCHAR | 50 | PASSTHRU | STATE_NAME |
 | address_1 | VARCHAR | 50 | | |
 | address_2 | VARCHAR | 50 | | |
 | old_ref_num | INTEGER | 50 | PASSTHRU | ID |
-| load_date | DATE | 10 | TO_CHAR(SYSDATE,'YYYY-MM-DD') |
+| load_date | DATE | 10 | PASSTHRU | TO_CHAR(SYSDATE,'YYYY-MM-DD') |
 | record_flag | VARCHAR | 10 | PASSTHRU | 'NEW'  |
 
 
