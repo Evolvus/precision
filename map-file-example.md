@@ -108,3 +108,33 @@ The menu options behave exactly as in the  [load and spool example](load-and-spo
 
 
 ## Using the *map-file* `operator`
+We need the *map-file* `operator` to transform data in a table to another table. In order for *map-file* to work we need the following,
+
+1. A *tsv* mapping file with a predefined structure must be present in the same `container` as the `instruction`.
+2. Oracle `connect-operator` is required
+3. Oracle database connection must be configured
+
+The mapping file has the following columns,
+1. Column Name, must be less than 30 characters
+2. Data Type
+3. Maximum Length
+4. Mapping Type
+5. Mapping Value
+
+The *map-file* `operator` uses the mapping file for the following,
+1. It creates a table with the name *O_filename* i.e. if the mapping file is named *casa.tsv*, the table will be called *O_CASA*.
+2. The columns of the table match the *Column Name* column of the mapping file.
+3. It uses the *Column Name*, *Mapping Type* and *Mapping Value* to consturct and execute a SQL statement that loads data into the table created above.
+
+Lets create the mapping sheet for our problem,
+| Column Name | Data Type | Maximum Length | Mapping Type | Mapping Value |
+|-------------|-----------|----------------|--------------|---------------|
+| name | VARCHAR | 50 | PASSTHRU | upper() |
+| gender | CHAR | 1 | PASSTHRU | decode() |
+| dob | DATE | 10 | PASSTHRU | "YEAR||'-01-01'" |
+| state | VARCHAR | 50 | PASSTHRU | STATE_NAME |
+| address_1 | VARCHAR | 50 | | |
+| address_2 | VARCHAR | 50 | | |
+| old_ref_num | INTEGER | 50 | PASSTHRU | ID |
+| load_date | DATE | 10 | TO_CHAR(SYSDATE,'YYYY-MM-DD') |
+| record_flag | VARCHAR | 10 | PASSTHRU | 'NEW'  |
