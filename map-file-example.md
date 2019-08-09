@@ -139,7 +139,14 @@ Lets create the mapping sheet for our problem,
 | old_ref_num | INTEGER | 50 | PASSTHRU | NL.ID |
 | load_date | DATE | 10 | PASSTHRU | TO_CHAR(SYSDATE,'YYYY-MM-DD') |
 | record_flag | VARCHAR | 10 | CONSTANT | 'NEW'  |
-| | | | __JOIN__ | FROM NAME_LIST NL |
-| | | | __JOIN__ | INNER JOIN STATE_MAP SM ON NL.STATE = SM.STATE_CODE |
+| | | | \_\_JOIN\\_\_ | FROM NAME_LIST NL |
+| | | | \_\_JOIN\_\_ | INNER JOIN STATE_MAP SM ON NL.STATE = SM.STATE_CODE |
+
+We are going to use the *map-file* `operator` to create a table whose columns have a one to one correspondance to the CSV file expected by the target system and then use the *spool* operator to generate the CSV file.
+
+The first three columns of the mapping sheet are self explanatory. These attributes are defined by what the target system expects. The number of rows in the sheet maps to the columms of the table which the *map-file* `operator` is going to create. The interesting columns of the mapping sheet are the *MAPPING_TYPE* and the *MAPPING_VALUE*. There are several values for *MAPPING_TYPE*, but the ones are going to use are *PASSTHRU* and *CONSTANT*. As their names suggest, if any row has a *MAPPING_TYPE* as a *PASSTHRU* - the *MAPPING_VALUE* value is passed to the transformation sql as is, if the *MAPPING_TYPE* is *CONSTANT*, then the *MAPPING_VALUE* value will be passed to the transformation sql. Next we have a *MAPPING_TYPE* of *\_\_JOIN\_\_*, the *MAPPING_VALUE* value of such rows is added to the where condition of the transformation sql.
+
+Lets add this file to the *containers/transform" container with the name *import_name.tsv*. Use a spreadsheet application to create this sheet and export the same as a tab-seperated-value file.
+
 
 
