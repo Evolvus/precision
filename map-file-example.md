@@ -47,4 +47,4 @@ The example requires that a we load data into a table, transform it to the requi
 | Spool | spool | Generate the CSV file |
 
 ## Creating the project
-In most of our exa
+In most of our examples we created the entire project from scratch. 
