@@ -1,5 +1,5 @@
 # Using the *map-file* `operator`
-This example will extend the [load and spool example](./load-and-spool-example.md) and illustrate the use of the *map-file* `operator`. The *map-file* `operator` transforms data from source to destination. It uses a *map-file* to describe the mapping between the source and the destination. 
+This example will extend the [load and spool example](./load-and-spool.md) and illustrate the use of the *map-file* `operator`. The *map-file* `operator` transforms data from source to destination. It uses a *map-file* to describe the mapping between the source and the destination. 
 
 Lets define the problem. The target system expects the following,
 1. Data should provided in a CSV format file
@@ -36,7 +36,7 @@ sqlplus precision100/yourprecisionpassword@sid
 ```
 
 ## Designing the Project
-The example requires that a we load data into a table, transform it to the requirements of the target system and generate a CSV file in the presecribed format. In that sense the project is very similar to the [load-and-spool-example](./load-and-spool-example.md) but with an extra step to transform the data. We will design the project as follows,
+The example requires that a we load data into a table, transform it to the requirements of the target system and generate a CSV file in the presecribed format. In that sense the project is very similar to the [load-and-spool-example](./load-and-spool.md) but with an extra step to transform the data. We will design the project as follows,
 
 
 | Dataflow | Container | Description |
@@ -47,9 +47,11 @@ The example requires that a we load data into a table, transform it to the requi
 | Spool | spool | Generate the CSV file |
 
 ## Creating the project
-In most of our examples we created the entire project from scratch. However in production, we will never do that, we start by copying an existing project that most closely matches the current requirements and modify it. We will be doing the same here. We will create a new repository and then copy the contents of [load-and-spool-example](./load-and-spool-example.md). 
+In most of our examples we created the entire project from scratch. However in production, we will never do that, we start by copying an existing project that most closely matches the current requirements and modify it. We will be doing the same here. We will create a new repository and then copy the contents of [load-and-spool-example](./load-and-spool.md). 
 
 Create a new repository with the name "map-file-example" with the description "A project to load, transform data into a table using the map-file operator and spool it into a file".
+
+![Create the map-file-example repository](./images/map-file-example-repository.png)
 
 Now execute the following,
 
@@ -59,4 +61,50 @@ cd load-and-spool-example
 git push --mirror https://github.com/ennovatenow/map-file-example.git
 ```
 
+And we have an identical copy of the project. Now lets go ahead make the modifications to match our design.
+
+```
+git clone https://github.com/ennovatenow/map-file-example.git map-file-example
+mkdir -p containers/transform
+touch containers/transform/container.reg
+
+echo "transform" > dataflows/transform.reg
+```
+
+Use your favorite text editor to edit *dataflows/project.reg* and add this line just above *spool*, "Transform data from source to destination,transform", and commit your code.
+
+```
+cd map-file-example
+git add .
+git commit -m "Added transform dataflow"
+git push origin master
+```
+
+With this we have a project which matches our design for this example. Now lets add the necessary operators and run the project.
+
+## Running the Project
+To execute this project we need to install the *precision-native* client and all the necessary operators and then configure the connection to the database.
  
+```
+git clone --recurse-submodules https://github.com/ennovatenow/precision-native.git mfe-client
+cd mfe-client
+./configure-project.sh "GIT" "https://github.com/ennovatenow/map-file-example.git" "Map File Example"
+echo "PRECISION100_CONNECTION,ORACLE,precision100,Welcome123,mig" > ./conf/.connections.env.sh
+
+git clone https://github.com/ennovatenow/precision-100-operators.git OPERATORS
+./bin/install-operators.sh ./OPERATORS/operators sql-plus
+./bin/install-connect-operators.sh ./OPERATORS/connect-operators/ oracle
+./bin/install-operators.sh ./OPERATORS/operators loader
+./bin/install-operators.sh ./OPERATORS/operators smart-loader
+./bin/install-operators.sh ./OPERATORS/operators map-file
+
+./init-exec.sh "dev-mock1"
+./migrate.sh
+```
+
+![The map file example menu](./images/map-file-example-menu.png)
+
+The menu options behave exactly as in the  [load and spool example](load-and-spool.md). Choosing option *1* will create the tables in the database, option *2* will load the data into the table and option *4* will generate the CSV file. Now lets modify the project to transform the data using the *map-file* `operator` and then generate the CSV of the transformed data.
+
+
+## Using the *map-file* `operator`
