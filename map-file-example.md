@@ -47,7 +47,16 @@ The example requires that a we load data into a table, transform it to the requi
 | Spool | spool | Generate the CSV file |
 
 ## Creating the project
-In most of our examples we created the entire project from scratch.
-However in production, we will never do that, we start by copying an existing project that most closely matches the current requirements and modify it.
-We will be doing the same here. We will create a new repository and then copy the contents of [load-and-spool-example](./load-and-spool-example.md)
+In most of our examples we created the entire project from scratch. However in production, we will never do that, we start by copying an existing project that most closely matches the current requirements and modify it. We will be doing the same here. We will create a new repository and then copy the contents of [load-and-spool-example](./load-and-spool-example.md). 
+
+Create a new repository with the name "map-file-example" with the description "A project to load, transform data into a table using the map-file operator and spool it into a file".
+
+Now execute the following,
+
+```
+git clone --bare https://github.com/ennovatenow/load-and-spool-example.git load-and-spool-example
+cd load-and-spool-example
+git push --mirror https://github.com/ennovatenow/map-file-example.git
+```
+
  
