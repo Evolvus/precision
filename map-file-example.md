@@ -130,14 +130,16 @@ Lets create the mapping sheet for our problem,
 
 | Column Name | Data Type | Maximum Length | Mapping Type | Mapping Value |
 |-------------|-----------|----------------|--------------|---------------|
-| name | VARCHAR | 50 | PASSTHRU | upper() |
-| gender | CHAR | 1 | PASSTHRU | decode() |
+| name | VARCHAR | 50 | PASSTHRU | UPPER(NL.NAME) |
+| gender | CHAR | 1 | PASSTHRU | CASE GENDER WHEN 'F' THEN '1' WHEN 'M' THEN 2 ELSE '2' END |
 | dob | DATE | 10 | PASSTHRU | YEAR\|\|'-01-01' |
-| state | VARCHAR | 50 | PASSTHRU | STATE_NAME |
+| state | VARCHAR | 50 | PASSTHRU | SM.STATE_NAME |
 | address_1 | VARCHAR | 50 | | |
 | address_2 | VARCHAR | 50 | | |
-| old_ref_num | INTEGER | 50 | PASSTHRU | ID |
+| old_ref_num | INTEGER | 50 | PASSTHRU | NL.ID |
 | load_date | DATE | 10 | PASSTHRU | TO_CHAR(SYSDATE,'YYYY-MM-DD') |
-| record_flag | VARCHAR | 10 | PASSTHRU | 'NEW'  |
+| record_flag | VARCHAR | 10 | CONSTANT | 'NEW'  |
+| | | | __JOIN__ | FROM NAME_LIST NL |
+| | | | __JOIN__ | INNER JOIN STATE_MAP SM ON NL.STATE = SM.STATE_CODE |
 
 
