@@ -47,4 +47,7 @@ The example requires that a we load data into a table, transform it to the requi
 | Spool | spool | Generate the CSV file |
 
 ## Creating the project
-In most of our examples we created the entire project from scratch. 
+In most of our examples we created the entire project from scratch.
+However in production, we will never do that, we start by copying an existing project that most closely matches the current requirements and modify it.
+We will be doing the same here. We will create a new repository and then copy the contents of [load-and-spool-example](./load-and-spool-example.md)
+ 
