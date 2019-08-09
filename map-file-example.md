@@ -127,6 +127,7 @@ The *map-file* `operator` uses the mapping file for the following,
 3. It uses the *Column Name*, *Mapping Type* and *Mapping Value* to consturct and execute a SQL statement that loads data into the table created above.
 
 Lets create the mapping sheet for our problem,
+
 | Column Name | Data Type | Maximum Length | Mapping Type | Mapping Value |
 |-------------|-----------|----------------|--------------|---------------|
 | name | VARCHAR | 50 | PASSTHRU | upper() |
@@ -138,3 +139,5 @@ Lets create the mapping sheet for our problem,
 | old_ref_num | INTEGER | 50 | PASSTHRU | ID |
 | load_date | DATE | 10 | TO_CHAR(SYSDATE,'YYYY-MM-DD') |
 | record_flag | VARCHAR | 10 | PASSTHRU | 'NEW'  |
+
+
