@@ -53,7 +53,7 @@ Create a new repository with the name "map-file-example" with the description "A
 
 ![Create the map-file-example repository](./images/map-file-example-repository.png)
 
-Now execute the following,
+Now execute the following to copy a repository,
 
 ```
 git clone --bare https://github.com/ennovatenow/load-and-spool-example.git load-and-spool-example
@@ -106,6 +106,13 @@ git clone https://github.com/ennovatenow/precision-100-operators.git OPERATORS
 
 The menu options behave exactly as in the  [load and spool example](load-and-spool.md). Choosing option *1* will create the tables in the database, option *2* will load the data into the table and option *4* will generate the CSV file. Now lets modify the project to transform the data using the *map-file* `operator` and then generate the CSV of the transformed data.
 
+But before that, lets close the `iteration`
+
+```
+cd mfe-client
+./close-exec.sh "dev-mock1"
+```
+
 
 ## Using the *map-file* `operator`
 We need the *map-file* `operator` to transform data in a table to another table. In order for *map-file* to work we need the following,
@@ -138,15 +145,76 @@ Lets create the mapping sheet for our problem,
 | address_2 | VARCHAR | 50 | | |
 | old_ref_num | INTEGER | 50 | PASSTHRU | NL.ID |
 | load_date | DATE | 10 | PASSTHRU | TO_CHAR(SYSDATE,'YYYY-MM-DD') |
-| record_flag | VARCHAR | 10 | CONSTANT | 'NEW'  |
-| | | | \_\_JOIN\\_\_ | FROM NAME_LIST NL |
+| record_flag | VARCHAR | 10 | CONSTANT | NEW  |
+| | | | \_\_JOIN\_\_ | FROM NAME_LIST NL |
 | | | | \_\_JOIN\_\_ | INNER JOIN STATE_MAP SM ON NL.STATE = SM.STATE_CODE |
 
 We are going to use the *map-file* `operator` to create a table whose columns have a one to one correspondance to the CSV file expected by the target system and then use the *spool* operator to generate the CSV file.
 
 The first three columns of the mapping sheet are self explanatory. These attributes are defined by what the target system expects. The number of rows in the sheet maps to the columms of the table which the *map-file* `operator` is going to create. The interesting columns of the mapping sheet are the *MAPPING_TYPE* and the *MAPPING_VALUE*. There are several values for *MAPPING_TYPE*, but the ones are going to use are *PASSTHRU* and *CONSTANT*. As their names suggest, if any row has a *MAPPING_TYPE* as a *PASSTHRU* - the *MAPPING_VALUE* value is passed to the transformation sql as is, if the *MAPPING_TYPE* is *CONSTANT*, then the *MAPPING_VALUE* value will be passed to the transformation sql. Next we have a *MAPPING_TYPE* of *\_\_JOIN\_\_*, the *MAPPING_VALUE* value of such rows is added to the where condition of the transformation sql.
 
-Lets add this file to the *containers/transform" container with the name *import_name.tsv*. Use a spreadsheet application to create this sheet and export the same as a tab-seperated-value file.
+Lets look at how this mapping sheet is resolving our problem statement.
+
+| Business Requirement | Mapping File Solution |
+|----------------------|-----------------------|
+| Name should be in upper case and have a maximum length of 50 characters | Use the Oracle function UPPER to conver the source data to upper case. Strictly speaking we should have used SUBSTR to cut the length of the source data to 50 characters. We didnt do this because profiling shows all our source data is less than 50 characters |
+| Gender should be 1 for Male and 2 for Female. Maximum length of 1 character  | Use the SQL CASE statement to transform the source value of 'F' / 'M' to 2 and 1. We have also made the assumption that if there source has any invalid character, the we should default '2' |
+| DOB should be in 'yyyy-mm-dd' format. Maximum length 10 characters | Since there is any Date of Birth in the source data we have chosen to default the value to 1st January for the year. |
+| State should be full name in upper case i.e OHIO for OH. Maximum length 50 characters | We need to map the source values which are codes to names. To do this we use SQL to join the source table column with a mapping table that has the corresponding names for the states |
+| Address 1. Maximum length 50 characters. | We dont have any data in the source to match this so we leave it blank |
+| Address 2. Maximum length 50 characters. | We dont have any data in the source to match this so we leave it blank |
+| Old Reference Number should be the reference number of the old records. Maximum length 50 characters | Point this attribute to the ID field of the source data.
+| Load Date. Should be in 'yyyy-mm-dd' format. Maximum length 10 characters | Use the Oracle SYSDATE function to get the current date and then use the TO_CHAR function to convert it into the format we want |
+| Record Flag. Should be 'NEW' for all records. Maximum length 50 characters | Map to a constant string 'NEW' |
 
 
+Normally we would use a spreadsheet application to create this sheet and export the same as a tab-separated-value file. Lets add this file to the *containers/transform* container with the name *import_name.tsv* and the `instruction` for the *map-file* and run the project.
+
+```
+cd map-file-example
+cp import_name.tsv containers/transform/
+
+echo "10,import_name,map-file" > containers/transform/container.reg
+
+git add .
+git commit -m "added instructions for map-file transformation"
+git push origin master
+```
+
+## Running the Project
+Let run the project and take a look at the generated sql files.
+
+```
+cd mfe-client
+./init-exec.sh "dev-mock2"
+./migrate.sh
+```
+
+This should give us the same menu as before. Choose menu options *1*, *2* and *3*. For option *3* you should get a log as below,
+
+
+![The map file example iteration 2 menu](./images/map-file-example-iteration-2-menu.png)
+
+
+![The map file example iteration 2 log menu](./images/map-file-example-iteration-2-log-menu.png)
+
+
+![The map file example iteration 2 map-file log](./images/map-file-example-iteration-2-map-file-log.png)
+
+If you look at the log it shows an error saying table does not exist, we will come to that. For now lets look at the SQL's generated by the map file. 
+
+## *map-file* generated scripts
+As mentioned above, the *map-file* `operator` generates SQL statements based on the mapping file and executes them. These files are created inn the *<iteration folder>/map-file/work* folders. Lets examine the files.
+
+The create table script file names have the pattern *O-mapping-file.sql*. e.g. *O-import_name.sql*
+![The map file example create table script](./images/map-file-example-create-table-script.png)
+
+The transformation script file names have the pattern *O-mapping-file-transform.sql*. e.g. *O-import_name-transform.sql*
+![The map file example transformation table script](./images/map-file-example-transformation-script.png)
+
+It is easy to understand how the data in the mapping sheet is used to generate the scripts. It also explains why we get the error in the log file. The *NAME_LIST* table is created by executing the sql in the *setup* container. The data for the table is loaded by the *loader* `operator` in the *load* container. The table reflected in the log file has never been created or loaded anywhere. Also if we choose the menu option *4* we see that it generates *NAME_LIST.csv* which has data the source data. This is not we want, to complete our example we need to generate the CSV file for the transformed data. 
+
+In the next step lets fix the error we got and also generate the CSV with the transformed data created by the *map-file* `operator`.
+
+## Completing the example
 
