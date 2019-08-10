@@ -6,3 +6,4 @@ The best way to learn the **Precision 100** framework is to go through the examp
 2. [The Longer Example](./the-longer-example.md)
 3. [Load and Spool Example](./load-and-spool.md)
 4. [**Precision 100** without *git* Example](./without-git-example.md)
+5. [Transforming data using the *map-file* `operator`](./map-file-example.md)

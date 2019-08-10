@@ -98,6 +98,7 @@ git clone https://github.com/ennovatenow/precision-100-operators.git OPERATORS
 ./bin/install-operators.sh ./OPERATORS/operators loader
 ./bin/install-operators.sh ./OPERATORS/operators smart-loader
 ./bin/install-operators.sh ./OPERATORS/operators map-file
+./bin/install-operators.sh ./OPERATORS/operators spool
 
 ./init-exec.sh "dev-mock1"
 ./migrate.sh
@@ -241,3 +242,20 @@ The *smart-loader* `operator` like the *spool* `operator` just takes the name of
 Now lets run the project.
 
 ## Running the project
+Now that all the changes needed for the project are done, lets run the project
+
+```
+cd mfe-client
+./init-exec.sh "dev-mock3"
+./migrate.sh
+```
+
+Execute the menu options *1* to *4* and then lets look at the transfomed data in the *o_import_name* table and the *o_import_name.csv* file.It should look like something below,
+
+![The map file example transformed table data](./images/map-file-example-transformed-table-data.png)
+
+![The map file example transformed table](./images/map-file-example-transformed-table.png)
+
+![The map file example transformed data](./images/map-file-example-transformed-data.png)
+
+And there we have it, loading data from a source and transforming it to the requirements of the target system using the *map-file* `operator`.
