@@ -22,6 +22,7 @@ To create and execute the project you need to have the following,
 3. A running *Oracle* database with a schema named *precision100*
 4. A working *sql plus* client
 5. A working *sql loader* client
+6. Must have completed the [load-and-spool example](./load-and-spool.md)
 
 You can find many tutorials and videos to install Git on your operating system. e.g. you can look at [this one from Atlassian](https://www.atlassian.com/git/tutorials/install-git) or [this from the Git book](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
@@ -172,7 +173,7 @@ Normally we would use a spreadsheet application to create this sheet and export 
 
 ```
 cd map-file-example
-cp import_name.tsv containers/transform/
+cp import_name.tsv containers/transform/import_name.tsv
 
 echo "10,import_name,map-file" > containers/transform/container.reg
 
@@ -217,4 +218,26 @@ It is easy to understand how the data in the mapping sheet is used to generate t
 In the next step lets fix the error we got and also generate the CSV with the transformed data created by the *map-file* `operator`.
 
 ## Completing the example
+In order to transform the state code in the source table to the state name required by the target system we need to use a mapping table. This table which we have named *STATE_MAP* needs to be created and data loaded into it. We can get this data from several sources. e.g. [here](https://developers.google.com/public-data/docs/canonical/states_csv). Lets download this data into a file named *state_map.dat* and load it using the *smart-loader* `operator`. Also lets add the `instruction` to spool the transformed data.
 
+```
+cd map-file-example
+echo "DROP TABLE STATE_MAP;" >> containers/setup/setup.sql
+echo "CREATE TABLE STATE_MAP ( state_code nvarchar2(2), state_name nvarchar2(50)); " >> containers/setup/setup.sql
+
+cp state_map.dat containers/load/state_map.dat
+echo "cp \$PRECISION100_EXECUTION_CONTAINER_FOLDER/\$CONTAINER/state_map.dat \$PRECISION100_OPERATOR_SMART_LOADER_INPUT_FOLDER/state_map.dat" >> containers/load/copy_file.sh
+echo "30,state_map,smart-loader" >> containers/load/container.reg
+
+echo "20,o_import_name,spool" >> containers/spool/container.reg
+
+git add .
+git commit -m "completing the rest of the changes"
+git push origin master
+```
+
+The *smart-loader* `operator` like the *spool* `operator` just takes the name of the table as a parameter. It generates the *ctl* file on the fly and loads the data from the eponymous *dat* file in the *PRECISION100_OPERATOR_SMART_LOADER_INPUT_FOLDER*. Hence the need to update the *copy_file.sh* to copy the *state_map.dat* file to the appropriate folder.
+
+Now lets run the project.
+
+## Running the project
