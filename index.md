@@ -43,6 +43,4 @@ The hardware requirements of Precision 100 Framework depend on the volume of dat
 ## Software Prerequisites
 As mentioned above, the only requirement for the framework is the *bash* shell of the correct version. However, the framework allows you to install `operator`s. These `operator`s can have different requirements. You will need to read the README for the operators to get the specific details. e.g. The *sql-plus* `operator` will require that Oracle client be instlled or the *secure-oracle* `connect-operator` would need *openssl* to be installed and configured properly.
 
-```
-*spool* operator for example uses 'set markup on csv' to generate spool files. This feature was introduced in *sql-plus* version 12.2. 
-```
+> *spool* operator for example uses 'set markup on csv' to generate spool files. This feature was introduced in *sql-plus* version 12.2. 
